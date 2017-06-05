@@ -8,6 +8,7 @@ let settings = JSON.parse(fs.readFileSync('./settings.json'))
 rmdir.sync(settings.output);
 fs.mkdirSync(settings.output);
 
+// comics handler
 const comics = fs.readdirSync(settings.comics)
 // sort array from low to high
 comics.sort((a,b) => {
@@ -31,7 +32,7 @@ for (let c = 1; c <= comics.length; c++) {
         if (err) console.error(err)
     })
 
-    // making the latest comic "index.html"
+    // copying the latest comic to "index.html"
     if (c == comics.length) {
         fs.writeFile(settings.output + 'index.html', data, err => {
             if (err) console.error(err)
@@ -39,20 +40,18 @@ for (let c = 1; c <= comics.length; c++) {
     }
 }
 
-// static file (non-comic pugs) handler
-
-const static = fs.readdirSync(settings.static)
-static.forEach(file => {
+// pages handler
+const pages = fs.readdirSync(settings.pages)
+pages.forEach(file => {
     let htmlFile = file.split('.pug')[0]+'.html'
-    let data = pug.renderFile(settings.static + file)
+    let data = pug.renderFile(settings.pages + file)
     let path = settings.output + htmlFile
     fs.writeFile(path, data, err => {
         if (err) console.error(err)
     })
 })
 
-// asset (images, css, js, etc handler
-
+// assets (images, css, js, etc) handler
 const assets = fs.readdirSync(settings.assets)
 assets.forEach(file => {
     fs.readFile(settings.assets + file, (err, data) => {

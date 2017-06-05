@@ -3,5 +3,5 @@
     "templates": "./src/templates/",
     "comics": "./src/comics/",
     "assets": "./src/assets/",
-    "static": "./src/static/"
+    "pages": "./src/pages/"
 }
