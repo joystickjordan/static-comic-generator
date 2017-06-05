@@ -1,0 +1,15 @@
+{
+  "name": "joystickjordan",
+  "version": "1.0.0",
+  "description": "Website for joystickjordan.com",
+  "main": "build.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pug": "^2.0.0-rc.2",
+    "rimraf": "^2.6.1"
+  }
+}

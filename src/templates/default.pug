@@ -1,0 +1,45 @@
+doctype html
+html(lang='en')
+    head
+        title
+            | Joystick Jordan - adventures in streaming
+        meta(charset='UTF-8')
+        link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css')
+        //- link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css')
+        link(rel='stylesheet' href='theme.min.css')
+        link(rel='stylesheet' href='stickyfooter.css')
+        block head
+    body
+        nav.navbar.navbar-inverse
+            .container
+                a.navbar-brand(href='index.html')
+                    strong Joystick Jordan
+                #bs-navbar-collapse-1.collapse.navbar-collapse
+                    ul.nav.navbar-nav.navbar-right
+                        li
+                            a(href='about.html')
+                                | About
+        .container
+            .row
+                .col-xs-12
+                    h1
+                        block title
+                    div
+                        block content
+        footer.footer
+            .container.text-right
+                ul.list-inline
+                    li
+                        a(href='https://twitch.tv/joystick_jordan' title='twitch')
+                            i.fa.fa-fw.fa-lg.fa-twitch
+                    li
+                        a(href='https://twitter.com/joystick_jordan/' title='twitter')
+                            i.fa.fa-fw.fa-lg.fa-twitter
+                    li
+                        a(href='https://joystickjordan.tumblr.com/' title='tumblr')
+                            i.fa.fa-fw.fa-lg.fa-tumblr
+                    li
+                        a(href='https://reddit.com/r/twitch/' title='reddit')
+                            i.fa.fa-fw.fa-lg.fa-reddit
+                    li.text-primary © 2017 joystickjordan.com ALL RIGHTS RESERVED
