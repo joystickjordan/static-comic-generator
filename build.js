@@ -21,11 +21,26 @@ for (let c = 1; c <= comics.length; c++) {
     const path = settings.output + c
 
     // pagination
-    let prevComic = '../1';
-    if (c > 1) prevComic = '../' + (c - 1)|0
-    let nextComic = '../index.html'
-    if (c < comics.length ) nextComic = '../' + (c + 1)|0
-    data = data.replace('{prevComic}', prevComic).replace('{nextComic}', nextComic)
+    let pagination = ''
+    if (c > 1) {
+        pagination += `<a class="btn btn-default" href="../1/"><i class="fa fa-4x fa-fw fa-angle-double-left"></i></a>`
+        pagination += `<a class="btn btn-default" href="${'../' + parseInt(c - 1) + '/'}"><i class="fa fa-4x fa-fw fa-angle-left"></i></a>`
+    } else {
+        pagination += `<a class="btn btn-default disabled" href=""><i class="fa fa-4x fa-fw fa-angle-double-left"></i></a>`
+        pagination += `<a class="btn btn-default disabled" href=""><i class="fa fa-4x fa-fw fa-angle-left"></i></a>`
+    }
+
+    if (c < comics.length ) {
+        pagination += `<a class="btn btn-default" href="${'../' + parseInt(c + 1) + '/'}"><i class="fa fa-4x fa-fw fa-angle-right"></i></a>`
+        pagination += `<a class="btn btn-default" href="../"><i class="fa fa-4x fa-fw fa-angle-double-right"></i></a>`
+    } else {
+        pagination += `<a class="btn btn-default disabled" href="${'../' + parseInt(c + 1) + '/'}"><i class="fa fa-4x fa-fw fa-angle-right"></i></a>`
+        pagination += `<a class="btn btn-default disabled" href="../"><i class="fa fa-4x fa-fw fa-angle-double-right"></i></a>`
+    }
+
+    data = data.replace('{%pagination%}', pagination)
+
+
     fs.mkdirSync(path)
     fs.writeFile(path + '/index.html', data, err => {
         if (err) console.error(err)

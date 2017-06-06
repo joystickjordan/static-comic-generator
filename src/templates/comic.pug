@@ -11,14 +11,15 @@ block content
     .row
         .col-xs-12.text-center
             br
-            a.btn.btn-default(href='../1/')
-                i.fa.fa-4x.fa-fw.fa-angle-double-left
-            a.btn.btn-default(href='{prevComic}')
-                i.fa.fa-4x.fa-fw.fa-angle-left
-            a.btn.btn-default(href='{nextComic}')
-                i.fa.fa-4x.fa-fw.fa-angle-right
-            a.btn.btn-default(href='../index.html')
-                i.fa.fa-4x.fa-fw.fa-angle-double-right
+            | {%pagination%}
+            //- a.btn.btn-default(href='{firstComic}')
+            //-     i.fa.fa-4x.fa-fw.fa-angle-double-left
+            //- a.btn.btn-default(href='{prevComic}')
+            //-     i.fa.fa-4x.fa-fw.fa-angle-left
+            //- a.btn.btn-default(href='{nextComic}')
+            //-     i.fa.fa-4x.fa-fw.fa-angle-right
+            //- a.btn.btn-default(href='{lastComic}')
+            //-     i.fa.fa-4x.fa-fw.fa-angle-double-right
 
     h2
         block blogTitle
