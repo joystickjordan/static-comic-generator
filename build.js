@@ -84,3 +84,16 @@ images.forEach(file => {
         }
     })
 })
+
+// static file handler, places files into top level with index.html
+const static = fs.readdirSync(settings.static)
+static.forEach(file => {
+    fs.readFile(settings.static + file, (err, data) => {
+        if (err) console.error(err)
+        else {
+            fs.writeFile(settings.output + file, data, writeErr => {
+                if (writeErr) console.error(writeErr)
+            })
+        }
+    })
+})

@@ -4,5 +4,6 @@
     "comics": "./src/comics/",
     "assets": "./src/assets/",
     "pages": "./src/pages/",
-    "images": "./src/images/"
+    "images": "./src/images/",
+    "static": "./src/static/"
 }
