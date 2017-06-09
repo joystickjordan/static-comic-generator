@@ -1,7 +1,9 @@
 extends ../templates/page
 
-block title
-    | About
+block variables
+    - title = 'About'
+    - description = ''
 
 block content
-    p Joystick Jordan was created by two Twitch.tv fans.
+    p.
+        Joystick Jordan was created by two Twitch.tv fans.

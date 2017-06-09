@@ -4,20 +4,21 @@ let settings = JSON.parse(fs.readFileSync('./settings.json'))
 
 const comics = fs.readdirSync(settings.comics)
 
-const data = `
-extends ../templates/comic
+const data = `extends ../templates/comic
 
-block title
-    | comic title
+block variables
+    - title = 'The Title'
+    - description = 'meta description'
 
 block comic
-    img(src='')
+    img(src='' alt='')
     
 block blogTitle
-    | blog title
+    | ${new Date().toDateString()}
 
 block blog
-    | blog text lorem ipsum
+    p.
+        blog text lorem ipsum
 `
 
 const filePath = settings.comics + (comics.length + 1) + '.pug'

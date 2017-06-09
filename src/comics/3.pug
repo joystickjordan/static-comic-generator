@@ -1,14 +1,15 @@
-
 extends ../templates/comic
 
-block title
-    | comic title
+block variables
+    - title = 'Third'
+    - description = ''
 
 block comic
     img(src='')
     
 block blogTitle
-    | blog title
+    | Thu Jun 08 2017
 
 block blog
-    | blog text lorem ipsum
+    p.
+        blog text lorem ipsum

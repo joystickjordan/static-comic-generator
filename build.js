@@ -5,10 +5,15 @@ const rmdir = require('rimraf')
 
 let settings = JSON.parse(fs.readFileSync('./settings.json'))
 
-rmdir.sync(settings.output);
-fs.mkdirSync(settings.output);
+// delete everything but '.git'
+makeDir(settings.output)
+const pubFiles = fs.readdirSync(settings.output)
+pubFiles.forEach(file => {
+    if (file != '.git') rmdir.sync(settings.output + file)
+})
 
 // comics handler
+makeDir(settings.comics)
 const comics = fs.readdirSync(settings.comics)
 // sort array from low to high
 comics.sort((a,b) => {
@@ -17,29 +22,29 @@ comics.sort((a,b) => {
     return (aInt - bInt)
 })
 for (let c = 1; c <= comics.length; c++) {
-    let data = pug.renderFile(settings.comics + comics[c-1])
-    const path = settings.output + c
-
-    // pagination
-    let pagination = ''
+    let pagination = {};
     if (c > 1) {
-        pagination += `<a class="btn btn-default" href="../1/"><i class="fa fa-4x fa-fw fa-angle-double-left"></i></a>`
-        pagination += `<a class="btn btn-default" href="${'../' + parseInt(c - 1) + '/'}"><i class="fa fa-4x fa-fw fa-angle-left"></i></a>`
+        pagination.disablePrev = ''
+        pagination.urlFirst = '../1/'
+        pagination.urlPrev = '../' + parseInt(c - 1) + '/'
     } else {
-        pagination += `<a class="btn btn-default disabled" href=""><i class="fa fa-4x fa-fw fa-angle-double-left"></i></a>`
-        pagination += `<a class="btn btn-default disabled" href=""><i class="fa fa-4x fa-fw fa-angle-left"></i></a>`
+        pagination.disablePrev = 'disabled'
+        pagination.urlFirst = ''
+        pagination.urlPrev = ''
     }
 
     if (c < comics.length ) {
-        pagination += `<a class="btn btn-default" href="${'../' + parseInt(c + 1) + '/'}"><i class="fa fa-4x fa-fw fa-angle-right"></i></a>`
-        pagination += `<a class="btn btn-default" href="../"><i class="fa fa-4x fa-fw fa-angle-double-right"></i></a>`
+        pagination.disableNext = ''
+        pagination.urlNext = '../' + parseInt(c + 1) + '/'
+        pagination.urlLast = '../'
     } else {
-        pagination += `<a class="btn btn-default disabled" href="${'../' + parseInt(c + 1) + '/'}"><i class="fa fa-4x fa-fw fa-angle-right"></i></a>`
-        pagination += `<a class="btn btn-default disabled" href="../"><i class="fa fa-4x fa-fw fa-angle-double-right"></i></a>`
+        pagination.disableNext = 'disabled'
+        pagination.urlNext = ''
+        pagination.urlLast = ''
     }
-
-    data = data.replace('{%pagination%}', pagination)
-
+    let paginationRendered = pug.renderFile(settings.templates + 'pagination.pug', pagination)
+    let data = pug.renderFile(settings.comics + comics[c-1], {pagination: paginationRendered})
+    const path = settings.output + c
 
     fs.mkdirSync(path)
     fs.writeFile(path + '/index.html', data, err => {
@@ -56,6 +61,7 @@ for (let c = 1; c <= comics.length; c++) {
 }
 
 // pages handler
+makeDir(settings.pages)
 const pages = fs.readdirSync(settings.pages)
 pages.forEach(file => {
     let filename = file.replace('.pug','')
@@ -69,10 +75,10 @@ pages.forEach(file => {
             })
         }
     }) 
-    
 })
 
 // assets (css, js, etc) handler
+makeDir(settings.assets)
 const assets = fs.readdirSync(settings.assets)
 fs.mkdirSync(settings.output + 'assets/')
 assets.forEach(file => {
@@ -87,6 +93,7 @@ assets.forEach(file => {
 })
 
 // images handler
+makeDir(settings.images)
 const images = fs.readdirSync(settings.images)
 fs.mkdirSync(settings.output + 'images/')
 images.forEach(file => {
@@ -101,6 +108,7 @@ images.forEach(file => {
 })
 
 // static file handler, places files into top level with index.html
+makeDir(settings.static)
 const static = fs.readdirSync(settings.static)
 static.forEach(file => {
     fs.readFile(settings.static + file, (err, data) => {
@@ -112,3 +120,11 @@ static.forEach(file => {
         }
     })
 })
+
+function makeDir(path) {
+    try {
+        fs.statSync(path)
+    } catch(e) {
+        fs.mkdirSync(path)
+    }
+}

@@ -1,20 +1,24 @@
 extends ../templates/comic
 
-block title
-    | First
+block variables
+    - title = 'First'
+    - description = 'Concept character sketches for JoystickJordan'
 
 block comic
-    img(src='../images/jordan.jpg')
-    img(src='../images/jordan2.jpg')
-    img(src='../images/mom.jpg')
-    img(src='../images/dad.jpg')
-    img(src='../images/ash.jpg')
-    img(src='../images/sophie.jpg')
+    img(src='../images/jordan.jpg' alt='Jordan')
+    img(src='../images/jordan2.jpg' alt='Jordan')
+    img(src='../images/mom.jpg' alt='Mom')
+    img(src='../images/dad.jpg' alt='Dad')
+    img(src='../images/ash.jpg' alt='Ash')
+    img(src='../images/sophie.jpg' alt='Sophie')
 
 block blogTitle
-    | Hello world
+    | Thu Jun 08 2017
 
 block blog
-    p Here is some concept art for the comic!
-    p From left to right, top to bottom: Jordan, Jordan (again), Jordan's Mom, Dad, Ash (friend), Sophie (friend)
-    
+    p.
+        Here is some concept art for the comic!
+    p.
+        From left to right, top to bottom: Jordan, Jordan (again), Jordan's Mom, Dad, Ash (friend), Sophie (friend)
+    p.
+        More coming soon!

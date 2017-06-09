@@ -1,9 +1,13 @@
+block variables
+    - var title = '';
+    - var description = 'A webcomic adventure in livestreaming';
+
 doctype html
 html(lang='en')
     head
-        title
-            | Joystick Jordan - adventures in streaming
+        title= 'Joystick Jordan - ' + title
         meta(charset='UTF-8')
+        meta(name='description' content=`${description}`)
         link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
         link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css')
         block head
@@ -15,13 +19,12 @@ html(lang='en')
                 #bs-navbar-collapse-1.collapse.navbar-collapse
                     ul.nav.navbar-nav.navbar-right
                         li
-                            a(href='about/')
+                            a(href='../about/')
                                 | About
         .container
             .row
                 .col-xs-12
-                    h1
-                        block title
+                    h1= title
                     div
                         block content
         footer.footer
