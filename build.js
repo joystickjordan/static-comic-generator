@@ -12,6 +12,8 @@ pubFiles.forEach(file => {
     if (file != '.git') rmdir.sync(settings.output + file)
 })
 
+makeDir('./src/')
+
 // comics handler
 makeDir(settings.comics)
 const comics = fs.readdirSync(settings.comics)
