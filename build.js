@@ -1,132 +1,153 @@
+// todo: markdown?
 
-const pug = require('pug')
-const fs = require('fs')
-const rmdir = require('rimraf')
+console.time('Build time');
 
-let settings = JSON.parse(fs.readFileSync('./settings.json'))
+const pug = require('pug');
+const fs = require('fs');
+const rmdir = require('rimraf');
+
+let settings = JSON.parse(fs.readFileSync('./settings.json'));
 
 // delete everything but '.git'
-makeDir(settings.output)
-const pubFiles = fs.readdirSync(settings.output)
+makeDir(settings.output);
+const pubFiles = fs.readdirSync(settings.output);
 pubFiles.forEach(file => {
-    if (file != '.git') rmdir.sync(settings.output + file)
-})
-
-makeDir('./src/')
+    if (file != '.git') rmdir.sync(settings.output + file);
+});
 
 // comics handler
 makeDir(settings.comics)
-const comics = fs.readdirSync(settings.comics)
-// sort array from low to high
-comics.sort((a,b) => {
-    const aInt = a.replace('.pug','')|0
-    const bInt = b.replace('.pug','')|0
-    return (aInt - bInt)
-})
-for (let c = 1; c <= comics.length; c++) {
-    let pagination = {};
-    if (c > 1) {
-        pagination.disablePrev = ''
-        pagination.urlFirst = '../1/'
-        pagination.urlPrev = '../' + parseInt(c - 1) + '/'
-    } else {
-        pagination.disablePrev = 'disabled'
-        pagination.urlFirst = ''
-        pagination.urlPrev = ''
-    }
+fs.readdir(settings.comics, (err, comics) => {
+    if (err) return console.error(err);
+    // sort array from low to high
+    comics.sort((a,b) => {
+        const aInt = a.replace('.pug','')|0;
+        const bInt = b.replace('.pug','')|0;
+        return (aInt - bInt);
+    });
+    for (let c = 1; c <= comics.length; c++) {
+        let pagination = {};
+        if (c > 1) {
+            pagination.disablePrev = '';
+            pagination.urlFirst = '../1/';
+            pagination.urlPrev = '../' + parseInt(c - 1) + '/';
+        } else {
+            pagination.disablePrev = 'disabled';
+            pagination.urlFirst = '';
+            pagination.urlPrev = '';
+        }
 
-    if (c < comics.length ) {
-        pagination.disableNext = ''
-        pagination.urlNext = '../' + parseInt(c + 1) + '/'
-        pagination.urlLast = '../'
-    } else {
-        pagination.disableNext = 'disabled'
-        pagination.urlNext = ''
-        pagination.urlLast = ''
-    }
-    let paginationRendered = pug.renderFile(settings.templates + 'pagination.pug', pagination)
-    let data = pug.renderFile(settings.comics + comics[c-1], {pagination: paginationRendered})
-    const path = settings.output + c
+        if (c < comics.length ) {
+            pagination.disableNext = '';
+            pagination.urlNext = '../' + parseInt(c + 1) + '/';
+            pagination.urlLast = '../';
+        } else {
+            pagination.disableNext = 'disabled';
+            pagination.urlNext = '';
+            pagination.urlLast = '';
+        }
+        let paginationRendered = pug.renderFile(settings.templates + 'pagination.pug', pagination);
+        let data = pug.renderFile(settings.comics + comics[c-1], {pagination: paginationRendered});
+        const path = settings.output + c;
 
-    fs.mkdirSync(path)
-    fs.writeFile(path + '/index.html', data, err => {
-        if (err) console.error(err)
-    })
+        fs.mkdirSync(path);
+        fs.writeFile(path + '/index.html', data, err => {
+            if (err) console.error(err);
+        });
 
-    // copying the latest comic to "index.html"
-    if (c == comics.length) {
-        data.replace('..', '')
-        fs.writeFile(settings.output + 'index.html', data, err => {
-            if (err) console.error(err)
-        })
+        // copying the latest comic to "index.html"
+        if (c == comics.length) {
+            data.replace('..', '');
+            fs.writeFile(settings.output + 'index.html', data, err => {
+                if (err) console.error(err);
+            });
+        }
     }
-}
+});
 
 // pages handler
-makeDir(settings.pages)
-const pages = fs.readdirSync(settings.pages)
-pages.forEach(file => {
-    let filename = file.replace('.pug','')
-    let data = pug.renderFile(settings.pages + file)
-    let path = settings.output + filename
-    fs.mkdir(path, (mkdirErr) => {
-        if (mkdirErr) console.error(mkdirErr)
-        else {
-            fs.writeFile(path + '/index.html', data, err => {
-                if (err) console.error(err)
-            })
-        }
-    }) 
-})
+makeDir(settings.pages);
+fs.readdir(settings.pages, (err, pages) => {
+    if (err) return console.error(err);
+    pages.forEach(file => {
+        let filename = file.replace('.pug','');
+        let data = pug.renderFile(settings.pages + file);
+        let path = settings.output + filename;
+        fs.mkdir(path, mkdirErr => {
+            if (mkdirErr) console.error(mkdirErr);
+            else {
+                fs.writeFile(path + '/index.html', data, err => {
+                    if (err) console.error(err);
+                });
+            }
+        });
+    });
+});
+
 
 // assets (css, js, etc) handler
-makeDir(settings.assets)
-const assets = fs.readdirSync(settings.assets)
-fs.mkdirSync(settings.output + 'assets/')
-assets.forEach(file => {
-    fs.readFile(settings.assets + file, (err, data) => {
-        if (err) console.error(err)
-        else {
-            fs.writeFile(settings.output + 'assets/' + file, data, writeErr => {
-                if (writeErr) console.error(writeErr)
-            })
-        }
-    })
-})
+makeDir(settings.assets);
+fs.mkdirSync(settings.output + 'assets/');
+fs.readdir(settings.assets, (err, assets) => {
+    if (err) return console.error(err);
+    assets.forEach(file => {
+        fs.readFile(settings.assets + file, (readFileErr, data) => {
+            if (readFileErr) console.error(readFileErr);
+            else {
+                fs.writeFile(settings.output + 'assets/' + file, data, writeErr => {
+                    if (writeErr) console.error(writeErr);
+                });
+            }
+        });
+    });
+});
 
 // images handler
-makeDir(settings.images)
-const images = fs.readdirSync(settings.images)
-fs.mkdirSync(settings.output + 'images/')
-images.forEach(file => {
-    fs.readFile(settings.images + file, (err, data) => {
-        if (err) console.error(err)
-        else {
-            fs.writeFile(settings.output + 'images/' + file, data, writeErr => {
-                if (writeErr) console.error(writeErr)
-            })
-        }
-    })
-})
+makeDir(settings.images);
+fs.mkdirSync(settings.output + 'images/');
+fs.readdir(settings.images, (err, images) => {
+    if (err) return console.error(err);
+    images.forEach(file => {
+        fs.readFile(settings.images + file, (readFileErr, data) => {
+            if (readFileErr) console.error(readFileErr);
+            else {
+                fs.writeFile(settings.output + 'images/' + file, data, writeErr => {
+                    if (writeErr) console.error(writeErr);
+                });
+            }
+        });
+    });
+});
 
 // static file handler, places files into top level with index.html
-makeDir(settings.static)
-const static = fs.readdirSync(settings.static)
-static.forEach(file => {
-    fs.readFile(settings.static + file, (err, data) => {
-        if (err) console.error(err)
-        else {
-            fs.writeFile(settings.output + file, data, writeErr => {
-                if (writeErr) console.error(writeErr)
-            })
-        }
-    })
-})
+makeDir(settings.static);
+fs.readdir(settings.static, (err, static) => {
+    if (err) return console.error(err);
+    static.forEach(file => {
+        fs.readFile(settings.static + file, (readFileErr, data) => {
+            if (readFileErr) console.error(readFileErr);
+            else {
+                fs.writeFile(settings.output + file, data, writeErr => {
+                    if (writeErr) console.error(writeErr);
+                });
+            }
+        });
+    });
+});
 
 function makeDir(path) {
-    try {
-        fs.statSync(path)
-    } catch(e) {
-        fs.mkdirSync(path)
+    let sepPath = path.split('/');
+    let cumulativePath = './';
+    for ( let p = 1; p < sepPath.length; p++) {
+        cumulativePath += sepPath[p] + '/';
+        if (!fs.existsSync(cumulativePath)) fs.mkdirSync(cumulativePath);
     }
 }
+
+process.on('exit', () => {
+    console.timeEnd('Build time');
+});
+
+// require('readline')
+//     .createInterface(process.stdin, process.stdout)
+//     .question("Press [Enter] to exit...", process.exit);

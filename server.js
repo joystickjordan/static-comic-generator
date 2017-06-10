@@ -1,10 +1,5 @@
 // Usage: node server.js --port [port] --cors --gz --https [keypath] [certpath] -dir [folder]
 
-/*
-    https://stackoverflow.com/questions/16333790/node-js-quick-file-server-static-files-over-http
-    TODO: config.json
-*/
-
 /*jshint
   esversion: 6,
   node: true
