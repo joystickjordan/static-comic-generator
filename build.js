@@ -30,7 +30,7 @@ fs.readdir(settings.comics, (err, comics) => {
         if (c > 1) {
             pagination.disablePrev = '';
             pagination.urlFirst = '../1/';
-            pagination.urlPrev = '../' + parseInt(c - 1) + '/';
+            pagination.urlPrev = '../' + comics[c - 1].replace('.pug','') + '/';
         } else {
             pagination.disablePrev = 'disabled';
             pagination.urlFirst = '';
@@ -39,7 +39,7 @@ fs.readdir(settings.comics, (err, comics) => {
 
         if (c < comics.length ) {
             pagination.disableNext = '';
-            pagination.urlNext = '../' + parseInt(c + 1) + '/';
+            pagination.urlNext = '../' + comics[c + 1].replace('.pug','') + '/';
             pagination.urlLast = '../';
         } else {
             pagination.disableNext = 'disabled';
@@ -57,8 +57,8 @@ fs.readdir(settings.comics, (err, comics) => {
 
         // copying the latest comic to "index.html"
         if (c == comics.length) {
-            data.replace('..', '');
-            fs.writeFile(settings.output + 'index.html', data, err => {
+            let indexData = data.replace(/\"\.\.\//gi, '\"');
+            fs.writeFile(settings.output + 'index.html', indexData, err => {
                 if (err) console.error(err);
             });
         }

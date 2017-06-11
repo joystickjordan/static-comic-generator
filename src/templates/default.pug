@@ -8,40 +8,52 @@ html(lang='en')
         title= 'Joystick Jordan — ' + title
         meta(charset='UTF-8')
         meta(name='description' content=`${description}`)
+        link(rel='icon' type='image/png' href='../assets/favicon.png')
         link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
         link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css')
         link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Bubblegum+Sans')
         block head
             link(rel='stylesheet' href='../assets/theme.min.css')
             link(rel='stylesheet' href='../assets/stickyfooter.css')
+            link(rel='stylesheet' href='../assets/custom.css')
     body
         .container
             .row
                 .col-xs-12.text-center
                     a(href='../index.html')
-                        h1.text-primary(style="font-family: 'Bubblegum Sans', cursive;") Joystick Jordan
+                        h1
+                            .visible-lg
+                                img(src='../assets/logo.png' alt='Joystick Jordan - adventures in livestreaming')
+                            .hidden-lg
+                                img(src='../assets/logo-sm.png' alt='Joystick Jordan - adventures in livestreaming')
             .row
                 .col-xs-12
                     nav.text-center
                         ul.list-inline
                             li
-                                a(href='../about/' title='About')
+                                a.text-warning(href='../about/' title='About')
                                     i.fa.fa-fw.fa-lg.fa-question-circle
+                                    | About
                             li
-                                a(href='https://twitch.tv/joystick_jordan' title='Twitch')
+                                a.text-warning(href='https://twitch.tv/joystick_jordan' title='Twitch')
                                     i.fa.fa-fw.fa-lg.fa-twitch
+                                    | Twitch
                             li
-                                a(href='https://twitter.com/joystick_jordan/' title='Twitter')
+                                a.text-warning(href='https://twitter.com/joystick_jordan/' title='Twitter')
                                     i.fa.fa-fw.fa-lg.fa-twitter
+                                    | Twitter
                             li
-                                a(href='https://joystickjordan.tumblr.com/' title='Tumblr')
+                                a.text-warning(href='https://joystickjordan.tumblr.com/' title='Tumblr')
                                     i.fa.fa-fw.fa-lg.fa-tumblr
+                                    | Tumblr
                             li
-                                a(href='https://reddit.com/r/twitch/' title='Reddit')
+                                a.text-warning(href='https://reddit.com/r/twitch/' title='Reddit')
                                     i.fa.fa-fw.fa-lg.fa-reddit
+                                    | Reddit
                             li 
-                                a(href='mailto:JoystickJordanComic@gmail.com' title='Email')
+                                a.text-warning(href='mailto:JoystickJordanComic@gmail.com' title='Email')
                                     i.fa.fa-fw.fa-lg.fa-envelope
+                                    | Email
             .row
                 .col-xs-12
                     h2= title
@@ -49,5 +61,5 @@ html(lang='en')
                         block content
 
         footer.footer
-            .container.text-right.text-primary
-                strong © 2017 joystickjordan.com ALL RIGHTS RESERVED
+            .container.text-right.text-warning
+                strong © 2017 &nbsp;&nbsp; joystickjordan.com &nbsp;&nbsp; ALL RIGHTS RESERVED
